@@ -10,7 +10,7 @@ from tensorflow.keras.models import load_model
 from numpy import expand_dims, asarray, round
 from numpy.random import normal
 
-# from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 
 from PIL import Image
 import io
