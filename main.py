@@ -21,7 +21,7 @@ import io
 # latent_dims = 100
 # number_of_photos = 25
 
-cats_dogs_classifier = load_model('models/cats_vs_dogs')
+cats_dogs_classifier = load_model('models/cats_vs_dogs.h5')
 
 
 app = FastAPI(docs_url=None, redoc_url=None)
