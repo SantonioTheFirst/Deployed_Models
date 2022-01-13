@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Alexander Kovalevskiy</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="row mt-2 align-items-center">
+    <div class="col-lg-8 offset-2 text-center">
+        <h1>Hello!</h1>
+        <img class="img-fluid" src="{{ url_for('static', path='/hello.jpg')}}" alt="">
+    </div>
+</div>
+{% endblock %}

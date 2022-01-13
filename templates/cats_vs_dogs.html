@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Cats VS Dogs</title>
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-2 align-items-center">
+        <div class="col-lg-8 offset-2 text-center">
+            <form class="ms-1 me-1" action="/cats_vs_dogs", method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                    <input type="file" name="file_input" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                        aria-label="Upload">
+                    <button class="btn btn-success" type="submit" id="inputGroupFileAddon04">Submit</button>
+                </div>
+            </form>
+            {% if prediction %}
+                <p class="p mt-2">{{ prediction }}</p>
+                {% if image %}
+                    <img src="{{ url_for('static', path='/image.jpg') }}" style="max-width: 50%;" alt="" class="img-fluid mt-2">
+                {% endif %}
+            {% else %}
+                <p class="p mt-2">Attach cat or dog image.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
