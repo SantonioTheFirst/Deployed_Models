@@ -4,9 +4,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.datastructures import Address
 
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
-import numpy as np
+# import numpy as np
+from numpy import expand_dims, asarray, round
+from numpy.random import normal
+
 from matplotlib import pyplot as plt
 
 from PIL import Image
@@ -21,7 +24,7 @@ number_of_photos = 25
 cats_dogs_classifier = load_model('models/cats_vs_dogs')
 
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -40,8 +43,8 @@ def plot_images(images):
 
 
 def prediction_result(prediction):
-    return f'Cat probability: {np.round(prediction[0][0] * 100, 4)}%, \
-         Dog probability: {np.round(prediction[0][1] * 100, 4)}%'
+    return f'Cat probability: {round(prediction[0][0] * 100, 4)}%, \
+         Dog probability: {round(prediction[0][1] * 100, 4)}%'
 
 
 @app.get('/', response_class=HTMLResponse)
@@ -63,13 +66,13 @@ async def cats_vs_dogs(request: Request, file_input: UploadFile = File(...)):
     if 'image' in file_format:
         file_data = await file_input.read()
         im = Image.open(io.BytesIO(file_data))
-        im_arr = np.asarray(np.asarray(im))
+        im_arr = asarray(asarray(im))
         filename = 'image.jpg'
         im.save(f'static/{filename}')
         im.close()
         prediction = prediction_result(
             cats_dogs_classifier.predict(
-                np.expand_dims(
+                expand_dims(
                     im_arr, axis=0)))
         image = True
     else:
@@ -90,7 +93,7 @@ def ganime(request: Request):
     # prediction = gan.layers[0](np.random.normal(
     #     0, 1, (number_of_photos, latent_dims)))
 
-    prediction = generator.predict(np.random.normal(0, 1, (number_of_photos, latent_dims)))
+    prediction = generator.predict(normal(0, 1, (number_of_photos, latent_dims)))
 
     plot_images(prediction)
     return templates.TemplateResponse(
