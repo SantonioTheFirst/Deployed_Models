@@ -17,9 +17,9 @@ import io
 
 # np.random.seed(1000)
 # gan = load_model('models/result_gan_nontrainable.h5')
-# generator = load_model('models/generator')
-# latent_dims = 100
-# number_of_photos = 25
+generator = load_model('models/generator.h5')
+latent_dims = 100
+number_of_photos = 25
 
 cats_dogs_classifier = load_model('models/cats_vs_dogs.h5')
 
@@ -31,15 +31,15 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory='templates')
 
 
-# def plot_images(images):
-#     figure = plt.figure(figsize=(5, 5))
-#     print(images.shape)
-#     for i in range(number_of_photos):
-#         plt.subplot(5, 5, i + 1)
-#         plt.imshow((images[i] + 1) / 2)
-#         plt.axis('off')
-#         plt.tight_layout()
-#     plt.savefig('static/generated.png')
+def plot_images(images):
+    figure = plt.figure(figsize=(5, 5))
+    print(images.shape)
+    for i in range(number_of_photos):
+        plt.subplot(5, 5, i + 1)
+        plt.imshow((images[i] + 1) / 2)
+        plt.axis('off')
+        plt.tight_layout()
+    plt.savefig('static/generated.png')
 
 
 def prediction_result(prediction):
@@ -83,18 +83,18 @@ async def cats_vs_dogs(request: Request, file_input: UploadFile = File(...)):
             'request': request, 'prediction': prediction, 'image': image})
 
 
-# @app.get('/ganime', response_class=HTMLResponse)
-# def ganime(request: Request):
-#     return templates.TemplateResponse('ganime.html', {'request': request})
+@app.get('/ganime', response_class=HTMLResponse)
+def ganime(request: Request):
+    return templates.TemplateResponse('ganime.html', {'request': request})
 
 
-# @app.post('/ganime', response_class=HTMLResponse)
-# def ganime(request: Request):
-#     # prediction = gan.layers[0](np.random.normal(
-#     #     0, 1, (number_of_photos, latent_dims)))
+@app.post('/ganime', response_class=HTMLResponse)
+def ganime(request: Request):
+    # prediction = gan.layers[0](np.random.normal(
+    #     0, 1, (number_of_photos, latent_dims)))
 
-#     prediction = generator.predict(normal(0, 1, (number_of_photos, latent_dims)))
+    prediction = generator.predict(normal(0, 1, (number_of_photos, latent_dims)))
 
-#     plot_images(prediction)
-#     return templates.TemplateResponse(
-#         'ganime.html', {'request': request, 'img': True})
+    plot_images(prediction)
+    return templates.TemplateResponse(
+        'ganime.html', {'request': request, 'img': True})
