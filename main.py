@@ -4,16 +4,16 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.datastructures import Address
 
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 
 # import numpy as np
-from numpy import expand_dims, asarray, round
-from numpy.random import normal
+# from numpy import expand_dims, asarray, round
+# from numpy.random import normal
 
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
-from PIL import Image
-import io
+# from PIL import Image
+# import io
 
 # np.random.seed(1000)
 # gan = load_model('models/result_gan_nontrainable.h5')
@@ -21,7 +21,7 @@ import io
 # latent_dims = 100
 # number_of_photos = 25
 
-cats_dogs_classifier = load_model('models/cats_vs_dogs.h5')
+# cats_dogs_classifier = load_model('models/cats_vs_dogs.h5')
 
 
 app = FastAPI(docs_url=None, redoc_url=None)
@@ -53,34 +53,34 @@ def index(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
 
-@app.get('/cats_vs_dogs', response_class=HTMLResponse)
-def cats_vs_dogs(request: Request):
-    return templates.TemplateResponse(
-        'cats_vs_dogs.html', {
-            'request': request})
+# @app.get('/cats_vs_dogs', response_class=HTMLResponse)
+# def cats_vs_dogs(request: Request):
+#     return templates.TemplateResponse(
+#         'cats_vs_dogs.html', {
+#             'request': request})
 
 
-@app.post('/cats_vs_dogs', response_class=HTMLResponse)
-async def cats_vs_dogs(request: Request, file_input: UploadFile = File(...)):
-    file_format = file_input.content_type
-    if 'image' in file_format:
-        file_data = await file_input.read()
-        im = Image.open(io.BytesIO(file_data))
-        im_arr = asarray(asarray(im))
-        filename = 'image.jpg'
-        im.save(f'static/{filename}')
-        im.close()
-        prediction = prediction_result(
-            cats_dogs_classifier.predict(
-                expand_dims(
-                    im_arr, axis=0)))
-        image = True
-    else:
-        prediction = 'Select an image file!'
-        image = False
-    return templates.TemplateResponse(
-        'cats_vs_dogs.html', {
-            'request': request, 'prediction': prediction, 'image': image})
+# @app.post('/cats_vs_dogs', response_class=HTMLResponse)
+# async def cats_vs_dogs(request: Request, file_input: UploadFile = File(...)):
+#     file_format = file_input.content_type
+#     if 'image' in file_format:
+#         file_data = await file_input.read()
+#         im = Image.open(io.BytesIO(file_data))
+#         im_arr = asarray(asarray(im))
+#         filename = 'image.jpg'
+#         im.save(f'static/{filename}')
+#         im.close()
+#         prediction = prediction_result(
+#             cats_dogs_classifier.predict(
+#                 expand_dims(
+#                     im_arr, axis=0)))
+#         image = True
+#     else:
+#         prediction = 'Select an image file!'
+#         image = False
+#     return templates.TemplateResponse(
+#         'cats_vs_dogs.html', {
+#             'request': request, 'prediction': prediction, 'image': image})
 
 
 # @app.get('/ganime', response_class=HTMLResponse)
