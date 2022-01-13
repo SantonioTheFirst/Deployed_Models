@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.datastructures import Address
 
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 # import numpy as np
 from numpy import expand_dims, asarray, round
